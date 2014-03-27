@@ -10,11 +10,10 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
- * 
+ *
  * @author Angelos Trigkas
- * 
+ *
  * Class PlayGame creates a game between the user and the computer.
  */
 public class PlayGame {
@@ -22,19 +21,21 @@ public class PlayGame {
     final static int PLAYER_ONE = 1;     // User player
     final static int PLAYER_TWO = -1;    // Computer Player
     final static int EMPTY = 0;
-    
     private Board board;
-    private computerPlayer compPlayer;
+    private ComputerPlayerHard compPlayerHard;
+    private ComputerPlayerEasy compPlayerEasy;
 
     /**
-     *  This method creates a game between  the user and the computer.
-     *  It also implements the user interface of the game.
+     * This method creates a game between the user and the computer. It also
+     * implements the user interface of the game.
      */
     public PlayGame() {
         board = new Board(7, 6);
-        compPlayer = new computerPlayer();
+        compPlayerHard = new ComputerPlayerHard();
+        compPlayerEasy = new ComputerPlayerEasy();
 
         int input = 0;
+        int difficulty = 0;
 
 
         while (true) {
@@ -57,6 +58,16 @@ public class PlayGame {
                 System.out.println("\nGoodbye!");
                 System.exit(0);
             } else {
+                System.out.println("Please enter level of difficulty.");
+                System.out.print("Press '1' for easy and '2' for hard >> ");
+
+                try {
+                    difficulty = readAndCheckInput(1, 2);
+                } catch (IOException ex) {
+                    Logger.getLogger(PlayGame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+
                 System.out.println("\nEnter below a number from 1 to 7 to drop a piece in the column you wish.");
                 System.out.println("Winner is the one who first connects four pieces in row, column or diagonally.\n");
 
@@ -77,11 +88,11 @@ public class PlayGame {
                         } catch (IOException ex) {
                             Logger.getLogger(PlayGame.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        
+
                         if (col == 0) {
                             break;
                         }
-                        
+
                         /*
                          * User move.
                          */
@@ -90,7 +101,12 @@ public class PlayGame {
                         /*
                          * Computer move.
                          */
-                        board.makeMove(compPlayer.getMove(board));
+                        if (difficulty == 1) {
+                            board.makeMove(compPlayerEasy.getMove(board));
+                        }
+                        else {
+                            board.makeMove(compPlayerHard.getMove(board));
+                        }
                     }
 
                     /*
@@ -112,14 +128,14 @@ public class PlayGame {
     }
 
     /**
-     * Reads user input from the command line and checks if it
-     * complies to certain standards. The input should be numerical
-     * and between the values low and high.
-     * 
-     * @param low  the lowest value the input can have
+     * Reads user input from the command line and checks if it complies to
+     * certain standards. The input should be numerical and between the values
+     * low and high.
+     *
+     * @param low the lowest value the input can have
      * @param high the highest value the input can have
      * @return the user input
-     * @throws IOException 
+     * @throws IOException
      */
     private int readAndCheckInput(int low, int high) throws IOException {
 
