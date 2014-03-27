@@ -13,8 +13,8 @@ public class Board {
 	private int cols;	// Number of columns of the game grid
 	private int rows;	// Number of rows of the game grid
 
-	private int[] moves;	// Stores the moves made by the players as the game progresses
-	private int lm;
+	private int[] moves;	// moves history, stores the moves made by each player as the game progresses
+	private int lm;         // moves counter
 
 	private int cp;		// Current player
 	private Point[][] cl;

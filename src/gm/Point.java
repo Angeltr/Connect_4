@@ -40,7 +40,6 @@ public class Point {
 		return state;
 	}
 	
-	/* My addition */
 	public String toString() {
 		return x + "," + y + "|" + state;
 	}
