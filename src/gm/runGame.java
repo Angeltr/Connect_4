@@ -25,26 +25,38 @@ public class runGame {
        
       System.out.println("\nWelcome to Connect 4 game!\n");
       
-      System.out.println("Enter below a number from 0 to 6 to drop a piece in the column you wish.");
+      System.out.println("Enter below a number from 1 to 7 to drop a piece in the column you wish.");
       System.out.println("Winner is the one who first connects four pieces in row, column or diagonally.\n");
       
       
       
        while ((b.winnerIs() == 0) && b.validMovesLeft()) {
            if (b.getCP() == PLAYER_ONE) {
-        	   int col;
+        	   int col = 0;
+                   boolean bool = false;
         	   /* Prompt the user for input. */
         	   System.out.print("User's turn. Enter column number >> ");
         	   
         	   /* Check user input for correctness. */
-        	   col = Integer.parseInt(move.readLine());
-        	   while (col < 0 || col > 6) {
-        		   System.out.print("Enter a number between 0 and 6   >> ");
+                   do {
+                        try {
+                            col = Integer.parseInt(move.readLine());
+                            bool = false;
+                        }              
+                        catch (NumberFormatException e) {
+                            System.out.print("Enter a number between 1 and 7   >> ");
+                            bool = true;
+                        }
+                   }
+                   while(bool);
+                   
+        	   while (col < 1 || col > 7) {
+        		   
         		   col = Integer.parseInt(move.readLine());
         	   }
         	   
         	   /* User move. */
-               b.makeMove(col);
+               b.makeMove(col-1);
            } else {
         	   /* Computer move. */
                b.makeMove(p.getMove(b));
