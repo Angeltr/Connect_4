@@ -1,6 +1,12 @@
 package gm;
 
 
+/**
+ * 
+ * @author Angelos Trigkas
+ * 
+ * Class Board implements the board that the game is played on.
+ */
 public class Board {
 
 	private final static int PLAYER_ONE = 1;
@@ -20,7 +26,13 @@ public class Board {
 	private Point[][] cl;
 
 
-	public Board(int columns, int inrows) {
+        /**
+         * Constructor. Creates a Board object.
+         * 
+         * @param columns  number of columns of the board
+         * @param inrows   number of rows of the board
+         */
+        public Board(int columns, int inrows) {
 		
 		cols = columns;
 		rows = inrows;
@@ -41,7 +53,8 @@ public class Board {
 		cp=PLAYER_ONE;
 	}
 
-	public void generateCL()
+        
+        public void generateCL()
 	{
 		cl=new Point[69][4];
 		int count=0;
@@ -101,11 +114,30 @@ public class Board {
 
 	}
 	
-	public boolean validMove(int column) {
+        /**
+         * A move is valid if there are less than 6 pieces 
+         * in the particular column.
+         * 
+         * @param column  the column attempted to be inserted a piece
+         * @return  TRUE if the move is valid, FALSE otherwise
+         */
+        public boolean validMove(int column) {
 		return heights[column]<rows;
 	}
 
-	public void makeMove(int column) {
+        /**
+         * Executes a move:
+         *  - Sets the state of the point the piece is placed in, 
+         *    depending on the player making the move
+         *  - Adjusts the height of the column that the piece is 
+         *    dropped in
+         *  - Increments the number of moves
+         *  - Stores the column in which the piece is added
+         *  - changes the current player
+         * 
+         * @param column  the column in which the piece will be dropped
+         */
+        public void makeMove(int column) {
 		grid[column][heights[column]].setState(cp);
 		heights[column]++;
 		lm++;
@@ -113,7 +145,11 @@ public class Board {
 		cp=-cp;
 	}
 
-	public void undoMove() {
+        /**
+         * Executes the opposite actions from makeMove() method.
+         * Used by the computer player to decide the best move.
+         */
+        public void undoMove() {
 
 		grid[moves[lm]][heights[moves[lm]]-1].setState(EMPTY);
 		heights[moves[lm]]--;
@@ -122,12 +158,22 @@ public class Board {
 	}
 
 
-	public boolean validMovesLeft() {
+        /**
+         * 
+         * @return TRUE if there are valid moves left, FALSE otherwise
+         */
+        public boolean validMovesLeft() {
 		return lm<moves.length-1;
 	}
 
 
-	public int winnerIs() {
+        /**
+         * 
+         * @return  1 if the user is the winner
+         *          2 if the computer is the winner
+         *          0 if there is no winner yet
+         */
+        public int winnerIs() {
 		for (int i = 0; i < cl.length; i++) {
 			
 			if (getScore(cl[i])==4) {
@@ -164,7 +210,7 @@ public class Board {
 	}
 
 
-	public int getStrength() {
+        public int getStrength() {
 		int sum = 0;
 		int[] weights = {0,1,10,50,600};
 		
@@ -174,6 +220,10 @@ public class Board {
 		return sum + (cp == PLAYER_ONE ? 16 : -16);
 	}
 
+        /**
+         * Prints the Board to the screen.
+         * @return 
+         */
 	public String toString() {
 		String temp = "";
 		
@@ -195,36 +245,49 @@ public class Board {
 		return temp;
 	}
 	
+        
+        /**
+         * Sets current player.
+         * @param cp player to be set
+         */
 	void setCP(int cp) {
 		this.cp = cp;
 	}
 	
+        /**
+         * Returns the current player.
+         * @return  1 for the user
+         *         -1 for the computer
+         */
 	int getCP() {
 		return cp;
 	}
 	
 	
-	/* My addition */
-	public void printCL() {
-		
-		for(int i=0; i<69; i++) {
-			for(int j=0; j<4; j++) {
-				System.out.print(cl[i][j] + " ");	
-			}
-			System.out.println();
-		}
-		
-	}
-	
-	public int getHeight(int col) {
+        /**
+         * Returns the height of a column.
+         * 
+         * @param col the requested columns height
+         * @return  height of column col
+         */
+        public int getHeight(int col) {
 		return this.heights[col];
 	}
 
-	public int getMove(int lm) {
+        /**
+         * Return a move from history.
+         * @param lm  move to be returned
+         * @return  the corresponding column
+         */
+        public int getMove(int lm) {
 		return this.moves[lm];
 	}
 	
-	public int getLm() {
+        /**
+         * 
+         * @return lm
+         */
+        public int getLm() {
 		return this.lm;
 	}
 }

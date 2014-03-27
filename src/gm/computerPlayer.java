@@ -9,8 +9,6 @@ package gm;
  *
  */
 
-
-
 public class computerPlayer {
 	
 	// should return a number

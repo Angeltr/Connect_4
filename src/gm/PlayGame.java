@@ -10,9 +10,12 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 /**
- *
- * @author Angel
+ * 
+ * @author Angelos Trigkas
+ * 
+ * Class PlayGame creates a game between the user and the computer.
  */
 public class PlayGame {
 
@@ -23,6 +26,10 @@ public class PlayGame {
     private Board board;
     private computerPlayer compPlayer;
 
+    /**
+     *  This method creates a game between  the user and the computer.
+     *  It also implements the user interface of the game.
+     */
     public PlayGame() {
         board = new Board(7, 6);
         compPlayer = new computerPlayer();
@@ -101,13 +108,19 @@ public class PlayGame {
 
             }
 
-
-
-
         }
-
     }
 
+    /**
+     * Reads user input from the command line and checks if it
+     * complies to certain standards. The input should be numerical
+     * and between the values low and high.
+     * 
+     * @param low  the lowest value the input can have
+     * @param high the highest value the input can have
+     * @return the user input
+     * @throws IOException 
+     */
     private int readAndCheckInput(int low, int high) throws IOException {
 
         BufferedReader move = new BufferedReader(new InputStreamReader(System.in));

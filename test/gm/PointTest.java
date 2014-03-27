@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Angel
+ * @author Angelos Trigkas
  */
 public class PointTest {
     

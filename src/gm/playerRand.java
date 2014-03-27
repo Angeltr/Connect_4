@@ -8,6 +8,13 @@ package gm;
 import java.util.*;
 
 
+/**
+ * 
+ * @author Angelos Trigkas
+ * 
+ * Class playerRand implements a computer player that makes
+ * random moves.
+ */
 public class playerRand {
 
     private Random rand = new Random();
