@@ -20,7 +20,7 @@ public class Board {
 	private Point[][] cl;
 
 
-	Board(int columns, int inrows) {
+	public Board(int columns, int inrows) {
 		
 		cols = columns;
 		rows = inrows;
@@ -128,56 +128,68 @@ public class Board {
 
 
 	public int winnerIs() {
-		for(int i=0;i<cl.length;i++)
-			if(getScore(cl[i])==4)
-			{
+		for (int i = 0; i < cl.length; i++) {
+			
+			if (getScore(cl[i])==4) {
 				return PLAYER_ONE;
 			}
 			else if(getScore(cl[i])==-4)
 				return PLAYER_TWO;
+		}
+		
 		return 0;
-
 	}
 
 	private int getScore(Point[] points) {
-		int playerone=0;
-		int playertwo=0;
-		for(int i=0;i<points.length;i++)
-			if(points[i].getState()==Board.PLAYER_ONE)
+		
+		int playerone = 0;
+		int playertwo = 0;
+		
+		for (int i = 0; i < points.length; i++) {
+			
+			if (points[i].getState() == Board.PLAYER_ONE) {
 				playerone++;
-			else if(points[i].getState()==Board.PLAYER_TWO)
+			}
+			else if (points[i].getState() == Board.PLAYER_TWO) {
 				playertwo++;
-		if((playerone+playertwo>0) && (!(playerone>0 && playertwo>0)))
-		{
-			return (playerone!=0)?playerone:playertwo;
+			}
 		}
-		else
+		
+		if ( (playerone+playertwo > 0) && (!(playerone > 0 && playertwo > 0)) ) {
+			return (playerone != 0) ? playerone : playertwo;
+		}
+		else {
 			return 0;
-	}
-
-
-	public int getStrength()
-	{
-		int sum=0;
-		int[] weights = {0,1,10,50,600};
-		for(int i=0;i<cl.length;i++)
-		{
-			sum+=(getScore(cl[i])>0)?weights[Math.abs(getScore(cl[i]))]:-weights[Math.abs(getScore(cl[i]))];
 		}
-		return sum+(cp==PLAYER_ONE?16:-16);
 	}
 
-	public String toString()
-	{
+
+	public int getStrength() {
+		int sum = 0;
+		int[] weights = {0,1,10,50,600};
+		
+		for (int i = 0; i < cl.length; i++) {
+			sum += (getScore(cl[i]) > 0) ? weights[Math.abs(getScore(cl[i]))] : -weights[Math.abs(getScore(cl[i]))];
+		}
+		return sum + (cp == PLAYER_ONE ? 16 : -16);
+	}
+
+	public String toString() {
 		String temp = "";
-		for(int y=rows-1;y>-1;y--){
-			for(int x=0;x<cols;x++)
-				if(grid[x][y].getState()==EMPTY)
+		
+		for (int y = rows-1; y > -1; y--) {
+			
+			for (int x = 0; x < cols; x++) {
+				if (grid[x][y].getState() == EMPTY) {
 					temp = temp + "-";
-				else if(grid[x][y].getState()==PLAYER_ONE)
+				}
+				else if (grid[x][y].getState() == PLAYER_ONE) {
 					temp = temp + "O";
-				else
+				}
+				else {
 					temp = temp + "X";
+				}
+			}
 			temp += "\n";
 		}
 		return temp;
@@ -203,5 +215,16 @@ public class Board {
 		}
 		
 	}
+	
+	public int getHeight(int col) {
+		return this.heights[col];
+	}
 
+	public int getMove(int lm) {
+		return this.moves[lm];
+	}
+	
+	public int getLm() {
+		return this.lm;
+	}
 }
