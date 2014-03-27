@@ -1,3 +1,8 @@
+/**
+*
+* @author Angelos Trigkas
+*/
+
 package gm;
 
 import java.io.*;
@@ -12,10 +17,9 @@ public class runGame {
 	   int EMPTY = 0;
 	   
        Board b;
-       playerSearch p, k;
+       computerPlayer p;
        b = new Board(7, 6);
-       p = new playerSearch();
-       k = new playerSearch();
+       p = new computerPlayer();
 
        BufferedReader move = new BufferedReader(new InputStreamReader(System.in));
        
@@ -29,16 +33,23 @@ public class runGame {
        while ((b.winnerIs() == 0) && b.validMovesLeft()) {
            if (b.getCP() == PLAYER_ONE) {
         	   int col;
+        	   /* Prompt the user for input. */
         	   System.out.print("User's turn. Enter column number >> ");
+        	   
+        	   /* Check user input for correctness. */
         	   col = Integer.parseInt(move.readLine());
         	   while (col < 0 || col > 6) {
         		   System.out.print("Enter a number between 0 and 6   >> ");
         		   col = Integer.parseInt(move.readLine());
         	   }
-               b.makeMove(col);// Make it so!
+        	   
+        	   /* User move. */
+               b.makeMove(col);
            } else {
-               b.makeMove(p.getMove(b));// Make it so!
+        	   /* Computer move. */
+               b.makeMove(p.getMove(b));
            }
+           /* Print the board to the screen. */
            System.out.println(b);
        }
        
