@@ -4,12 +4,12 @@ package gm;
  * 
  * @author Angelos Trigkas
  * 
- * Class computerPlayer implements the Artificial Intelligence
+ * Class ComputerPlayerHard implements the Artificial Intelligence
  * used behind the computer player.
  *
  */
 
-public class computerPlayer {
+public class ComputerPlayerHard {
 	
 	// should return a number
 	int getMove(Board cB) {

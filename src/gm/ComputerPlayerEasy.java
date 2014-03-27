@@ -12,10 +12,10 @@ import java.util.*;
  * 
  * @author Angelos Trigkas
  * 
- * Class playerRand implements a computer player that makes
+ * Class ComputerPlayerEasy implements a computer player that makes
  * random moves.
  */
-public class playerRand {
+public class ComputerPlayerEasy {
 
     private Random rand = new Random();
 

@@ -13,16 +13,16 @@ public class Board {
 	private final static int PLAYER_TWO = -1;
 	private final static int EMPTY = 0;
 
-	private Point[][] grid;		// The game grid
-	private int[] heights;		// Number of pieces added to each column as the game progresses
+	private Point[][] board;		// The game board
+	private int[] columnHeight;		// Number of pieces added to each column as the game progresses
 
-	private int cols;	// Number of columns of the game grid
-	private int rows;	// Number of rows of the game grid
+	private int cols;	// Number of columns of the game board
+	private int rows;	// Number of rows of the game board
 
-	private int[] moves;	// moves history, stores the moves made by each player as the game progresses
-	private int lm;         // moves counter
+	private int[] movesMade;	// movesMade history, stores the movesMade made by each player as the game progresses
+	private int moveCounter;         // movesMade counter
 
-	private int cp;		// Current player
+	private int currentPlayer;		// Current player
 	private Point[][] cl;
 
 
@@ -36,21 +36,21 @@ public class Board {
 		
 		cols = columns;
 		rows = inrows;
-		grid = new Point[cols][rows];
-		heights = new int[cols];
-		moves = new int[cols*rows];
-		lm = -1;
+		board = new Point[cols][rows];
+		columnHeight = new int[cols];
+		movesMade = new int[cols*rows];
+		moveCounter = -1;
 		
-		/* Set heights to zero and initialise all points to EMPTY. */
+		/* Set columnHeight to zero and initialise all points to EMPTY. */
 		for(int x=0; x<cols;x++)
 		{
-			heights[x]=0;
+			columnHeight[x]=0;
 			for(int y=0;y<rows;y++)
-				grid[x][y]=new Point(x,y,EMPTY); 
+				board[x][y]=new Point(x,y,EMPTY); 
 
 		}
 		generateCL();
-		cp=PLAYER_ONE;
+		currentPlayer=PLAYER_ONE;
 	}
 
         
@@ -65,7 +65,7 @@ public class Board {
 			{
 				Point[] temp = new Point[4];
 				for(int i=x;i<x+4;i++)
-					temp[i-x]=grid[i][y];
+					temp[i-x]=board[i][y];
 				cl[count]=temp;
 				count++;
 			}
@@ -79,7 +79,7 @@ public class Board {
 			{
 				Point[] temp = new Point[4];
 				for(int i=y;i<y+4;i++)
-					temp[i-y]=grid[x][i];
+					temp[i-y]=board[x][i];
 				cl[count]=temp;
 				count++;
 			}
@@ -93,7 +93,7 @@ public class Board {
 			{
 				Point[] temp = new Point[4];
 				for(int t=x,i=y;t<x+4 && i<y+4;t++,i++)
-					temp[i-y]=grid[t][i];
+					temp[i-y]=board[t][i];
 				cl[count]=temp;
 				count++;
 			}
@@ -105,7 +105,7 @@ public class Board {
 			{
 				Point[] temp = new Point[4];
 				for(int t=x,i=y;t<x+4 && i>-1;t++,i--)
-					temp[t-x]=grid[t][i];
+					temp[t-x]=board[t][i];
 				cl[count]=temp;
 				count++;
 			}
@@ -122,7 +122,7 @@ public class Board {
          * @return  TRUE if the move is valid, FALSE otherwise
          */
         public boolean validMove(int column) {
-		return heights[column]<rows;
+		return columnHeight[column]<rows;
 	}
 
         /**
@@ -131,18 +131,18 @@ public class Board {
          *    depending on the player making the move
          *  - Adjusts the height of the column that the piece is 
          *    dropped in
-         *  - Increments the number of moves
+         *  - Increments the number of movesMade
          *  - Stores the column in which the piece is added
          *  - changes the current player
          * 
          * @param column  the column in which the piece will be dropped
          */
         public void makeMove(int column) {
-		grid[column][heights[column]].setState(cp);
-		heights[column]++;
-		lm++;
-		moves[lm]=column;
-		cp=-cp;
+		board[column][columnHeight[column]].setState(currentPlayer);
+		columnHeight[column]++;
+		moveCounter++;
+		movesMade[moveCounter]=column;
+		currentPlayer=-currentPlayer;
 	}
 
         /**
@@ -151,19 +151,19 @@ public class Board {
          */
         public void undoMove() {
 
-		grid[moves[lm]][heights[moves[lm]]-1].setState(EMPTY);
-		heights[moves[lm]]--;
-		lm--;
-		cp=-cp;
+		board[movesMade[moveCounter]][columnHeight[movesMade[moveCounter]]-1].setState(EMPTY);
+		columnHeight[movesMade[moveCounter]]--;
+		moveCounter--;
+		currentPlayer=-currentPlayer;
 	}
 
 
         /**
          * 
-         * @return TRUE if there are valid moves left, FALSE otherwise
+         * @return TRUE if there are valid movesMade left, FALSE otherwise
          */
         public boolean validMovesLeft() {
-		return lm<moves.length-1;
+		return moveCounter<movesMade.length-1;
 	}
 
 
@@ -217,7 +217,7 @@ public class Board {
 		for (int i = 0; i < cl.length; i++) {
 			sum += (getScore(cl[i]) > 0) ? weights[Math.abs(getScore(cl[i]))] : -weights[Math.abs(getScore(cl[i]))];
 		}
-		return sum + (cp == PLAYER_ONE ? 16 : -16);
+		return sum + (currentPlayer == PLAYER_ONE ? 16 : -16);
 	}
 
         /**
@@ -230,10 +230,10 @@ public class Board {
 		for (int y = rows-1; y > -1; y--) {
 			
 			for (int x = 0; x < cols; x++) {
-				if (grid[x][y].getState() == EMPTY) {
+				if (board[x][y].getState() == EMPTY) {
 					temp = temp + "-";
 				}
-				else if (grid[x][y].getState() == PLAYER_ONE) {
+				else if (board[x][y].getState() == PLAYER_ONE) {
 					temp = temp + "O";
 				}
 				else {
@@ -248,10 +248,10 @@ public class Board {
         
         /**
          * Sets current player.
-         * @param cp player to be set
+         * @param currentPlayer player to be set
          */
 	void setCP(int cp) {
-		this.cp = cp;
+		this.currentPlayer = cp;
 	}
 	
         /**
@@ -260,7 +260,7 @@ public class Board {
          *         -1 for the computer
          */
 	int getCP() {
-		return cp;
+		return currentPlayer;
 	}
 	
 	
@@ -271,23 +271,23 @@ public class Board {
          * @return  height of column col
          */
         public int getHeight(int col) {
-		return this.heights[col];
+		return this.columnHeight[col];
 	}
 
         /**
          * Return a move from history.
-         * @param lm  move to be returned
+         * @param moveCounter  move to be returned
          * @return  the corresponding column
          */
         public int getMove(int lm) {
-		return this.moves[lm];
+		return this.movesMade[lm];
 	}
 	
         /**
          * 
-         * @return lm
+         * @return moveCounter
          */
         public int getLm() {
-		return this.lm;
+		return this.moveCounter;
 	}
 }
